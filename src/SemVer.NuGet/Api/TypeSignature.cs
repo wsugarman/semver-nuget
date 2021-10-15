@@ -33,7 +33,7 @@ namespace SemVer.NuGet.Api
                 throw new ArgumentNullException(nameof(symbol));
 
             if (!symbol.IsType)
-                throw new ArgumentException(SR.Format(SR.InvalidTypeSymbolFormat, symbol.Name), nameof(symbol));
+                throw new ArgumentException(SR.Format(Exceptions.InvalidTypeSymbolFormat, symbol.Name), nameof(symbol));
 
             Namespace = symbol.ContainingNamespace?.Name;
             Name = symbol.Name;

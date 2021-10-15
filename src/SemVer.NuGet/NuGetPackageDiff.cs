@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -14,6 +15,7 @@ using NuGet.Frameworks;
 using NuGet.Packaging.Core;
 using NuGet.Versioning;
 using SemVer.NuGet.Api;
+using SemVer.NuGet.Extensions;
 
 namespace SemVer.NuGet
 {
@@ -44,7 +46,7 @@ namespace SemVer.NuGet
             {
                 Compilation? after = await CompileAsync(framework, cancellationToken).ConfigureAwait(false);
                 if (after is null)
-                    throw new InvalidOperationException(SR.Format(SR.CompilationFailedFormat, framework));
+                    throw new InvalidOperationException(SR.Format(Exceptions.CompilationFailedFormat, framework));
 
                 CompareAssemblies(framework, before, after, changes);
             }
@@ -75,13 +77,13 @@ namespace SemVer.NuGet
             {
                 if (!currentlyAvailable.TryGetValue(desired, out Assembly? assembly))
                 {
-                    changes.Add(ChangeKind.Minor, SR.Format(Changes.TargetFrameworkAddedFormat, desired));
+                    changes.Add(desired, ChangeKind.Minor, SR.Format(Changes.TargetFrameworkAddedFormat, desired));
                 }
                 else
                 {
                     currentlyAvailable.Remove(desired);
                     if (!string.Equals(assembly.FullName, _specification.AssemblyName, StringComparison.Ordinal))
-                        changes.Add(ChangeKind.Major, SR.Format(Changes.AssemblyRenameFormat, assembly.FullName, _specification.AssemblyName, desired));
+                        changes.Add(desired, ChangeKind.Major, SR.Format(Changes.AssemblyRenameFormat, assembly.FullName, _specification.AssemblyName, desired));
                     else
                         yield return (desired, assembly);
                 }
@@ -89,7 +91,7 @@ namespace SemVer.NuGet
 
             // Check for any remaining frameworks
             foreach (NuGetFramework deleted in currentlyAvailable.Keys)
-                changes.Add(ChangeKind.Major, SR.Format(Changes.TargetFrameworkRemovedFormat, deleted));
+                changes.Add(deleted, ChangeKind.Major, SR.Format(Changes.TargetFrameworkRemovedFormat, deleted));
         }
 
         private async Task<Compilation?> CompileAsync(NuGetFramework framework, CancellationToken cancellationToken = default)
@@ -108,9 +110,30 @@ namespace SemVer.NuGet
             return compilation;
         }
 
+        [SuppressMessage("MicrosoftCodeAnalysisCorrectness", "RS1024:Compare symbols correctly", Justification = "Analyzer is incorrectly flagged signature comparison.")]
         private static void CompareAssemblies(NuGetFramework framework, Assembly before, Compilation after, ChangeSummaryBuilder changes)
         {
-            // TODO ...
+            Dictionary<TypeSignature, Type> beforeTypes = before.GetExportedTypes().ToDictionary(x => new TypeSignature(x));
+            Dictionary<TypeSignature, INamedTypeSymbol> afterTypes = after.GetExportedTypes().ToDictionary(x => new TypeSignature(x));
+
+            // Check for any differences and removed types
+            foreach ((TypeSignature signature, Type beforeType) in beforeTypes)
+            {
+                beforeTypes.Remove(signature);
+                if (!afterTypes.TryGetValue(signature, out INamedTypeSymbol? afterType))
+                {
+                    changes.Add(framework,ChangeKind.Major, SR.Format(Changes.TypeRemovedFormat, signature));
+                }
+                else
+                {
+                    afterTypes.Remove(signature);
+                    changes.AddIfChanged(signature, beforeType, afterType);
+                }
+            }
+
+            // Check for any added types
+            foreach (TypeSignature signature in afterTypes.Keys)
+                changes.Add(framework, ChangeKind.Major, SR.Format(Changes.TypeAddedFormat, signature));
         }
     }
 }

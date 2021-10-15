@@ -67,7 +67,7 @@ namespace SemVer.NuGet.MSBuild
                     || string.Equals(OutputType, "Winexe", StringComparison.OrdinalIgnoreCase))
                     return "exe";
                 else
-                    throw new ArgumentException(SR.Format(SR.InvalidOutputTypeFormat, OutputType));
+                    throw new ArgumentException(SR.Format(Exceptions.InvalidOutputTypeFormat, OutputType));
             }
         }
 
@@ -78,7 +78,7 @@ namespace SemVer.NuGet.MSBuild
             {
                 NuGetFramework nugetFramework = NuGetFramework.Parse(framework);
                 if (nugetFramework is null)
-                    throw new InvalidOperationException(SR.Format(SR.InvalidTargetFrameworkFormat, framework));
+                    throw new InvalidOperationException(SR.Format(Exceptions.InvalidTargetFrameworkFormat, framework));
 
                 nugetFrameworks.Add(nugetFramework);
             }

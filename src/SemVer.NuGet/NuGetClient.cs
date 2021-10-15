@@ -16,6 +16,7 @@ using NuGet.Packaging.Core;
 using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
+using SemVer.NuGet.Extensions;
 
 namespace SemVer.NuGet
 {
@@ -69,7 +70,7 @@ namespace SemVer.NuGet
                     if (sourceLatest is not null)
                     {
                         if (latest is not null && latest != sourceLatest)
-                            throw new InvalidOperationException(SR.Format(SR.AmbiguousVersionFormat, packageId));
+                            throw new InvalidOperationException(SR.Format(Exceptions.AmbiguousVersionFormat, packageId));
 
                         latest = sourceLatest;
                     }
@@ -112,17 +113,17 @@ namespace SemVer.NuGet
                                 "lib"));
 
                         if (!libDir.Exists)
-                            throw new InvalidOperationException(SR.MissingLibFolderMessage);
+                            throw new InvalidOperationException(Exceptions.MissingLibFolderMessage);
 
                         DirectoryInfo[] folders = libDir.GetDirectories();
                         if (folders.Length == 0)
-                            throw new InvalidOperationException(SR.MissingTargetFrameworkMessage);
+                            throw new InvalidOperationException(Exceptions.MissingTargetFrameworkMessage);
 
                         foreach (DirectoryInfo folder in folders)
                         {
                             NuGetFramework nugetFramework = NuGetFramework.Parse(folder.Name);
                             if (nugetFramework is null)
-                                throw new InvalidOperationException(SR.Format(SR.InvalidTargetFrameworkFormat, folder));
+                                throw new InvalidOperationException(SR.Format(Exceptions.InvalidTargetFrameworkFormat, folder));
 
                             FileInfo[] files = folder.GetFiles()
                                 .Where(x => string.Equals(x.Extension, ".dll", StringComparison.OrdinalIgnoreCase)
@@ -130,7 +131,7 @@ namespace SemVer.NuGet
                                 .ToArray();
 
                             if (files.Length != 1)
-                                throw new InvalidOperationException(SR.Format(SR.UnexpectedAssembliesFormat, files.Length));
+                                throw new InvalidOperationException(SR.Format(Exceptions.UnexpectedAssembliesFormat, files.Length));
 
                             libs.Add(nugetFramework, Assembly.LoadFrom(files[0].FullName));
                         }

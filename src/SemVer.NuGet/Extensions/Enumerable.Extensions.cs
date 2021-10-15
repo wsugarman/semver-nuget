@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SemVer.NuGet
+namespace SemVer.NuGet.Extensions
 {
     internal static class EnumerableExtensions
     {

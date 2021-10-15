@@ -121,9 +121,18 @@
     <value>Assembly has been renamed from '{0}' to '{1}' for framework '{2}'.</value>
   </data>
   <data name="TargetFrameworkAddedFormat" xml:space="preserve">
-    <value>Target framework '{0}' has been added.</value>
+    <value>New target framework '{0}' has been added.</value>
   </data>
   <data name="TargetFrameworkRemovedFormat" xml:space="preserve">
-    <value>Target framework '{0}' has been removed.</value>
+    <value>Existing target framework '{0}' has been removed.</value>
+  </data>
+  <data name="TypeAddedFormat" xml:space="preserve">
+    <value>New type '{0}' has been added.</value>
+  </data>
+  <data name="TypeCategoryChangeFormat" xml:space="preserve">
+    <value>Type '{0}' was changed from a '{1}' to '{2}'.</value>
+  </data>
+  <data name="TypeRemovedFormat" xml:space="preserve">
+    <value>Existing type '{0}' has been removed.</value>
   </data>
 </root>

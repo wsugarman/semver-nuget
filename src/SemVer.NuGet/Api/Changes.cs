@@ -14,6 +14,12 @@ namespace SemVer.NuGet.Api
 
         public static string TargetFrameworkRemovedFormat => ChangeResourceManager.GetString(nameof(TargetFrameworkRemovedFormat), CultureInfo.CurrentUICulture)!;
 
+        public static string TypeAddedFormat => ChangeResourceManager.GetString(nameof(TypeAddedFormat), CultureInfo.CurrentUICulture)!;
+
+        public static string TypeCategoryChangeFormat => ChangeResourceManager.GetString(nameof(TypeCategoryChangeFormat), CultureInfo.CurrentUICulture)!;
+
+        public static string TypeRemovedFormat => ChangeResourceManager.GetString(nameof(TypeRemovedFormat), CultureInfo.CurrentUICulture)!;
+
         private static readonly ResourceManager ChangeResourceManager = new ResourceManager("SemVer.NuGet.Resources.Changes", typeof(Changes).Assembly);
     }
 }
