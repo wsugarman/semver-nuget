@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Assembly and Build Properties -->
+  <PropertyGroup>
+    <Copyright>Copyright © 2021 William Sugarman.</Copyright>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <!-- NU5105: We're purposefully using SemVar 2.0 -->
+    <NoWarn>NU5105</NoWarn>
+    <Product>Semantic NuGet Versioning</Product>
+    <SkipDefaultEditorConfigAsAdditionalFile>true</SkipDefaultEditorConfigAsAdditionalFile>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <!-- NuGet -->
+  <PropertyGroup>
+    <Authors>William Sugarman</Authors>
+    <MinClientVersion>4.9.0</MinClientVersion>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+  
+  <!-- Source Link -->
+  <PropertyGroup>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+  </PropertyGroup>
+
+  <!-- Packages -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="16.11.0" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.Build.Locator" Version="1.4.1" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.11.0" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.11.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="3.11.0" />
+    <PackageReference Include="NuGet.Configuration" Version="5.11.0" />
+    <PackageReference Include="NuGet.Packaging" Version="5.11.0" />
+    <PackageReference Include="NuGet.Protocol" Version="5.11.0" />
+    <PackageReference Include="NuGet.Resolver" Version="5.11.0" />
+    <PackageReference Include="System.Linq.Async" Version="5.0.0" />
+    <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="MSBuild\VersionDetectionTask.*.cs">
+      <DependentUpon>VersionDetectionTask.cs</DependentUpon>
+    </None>
+  </ItemGroup>
+
+</Project>
