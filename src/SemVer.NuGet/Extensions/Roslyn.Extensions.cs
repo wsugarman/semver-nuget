@@ -17,7 +17,7 @@ namespace SemVer.NuGet.Extensions
             ExportedTypeVisitor visitor = new ExportedTypeVisitor(cancellationToken);
             visitor.Visit(compilation.GlobalNamespace);
 
-            return visitor.FoundTypes;
+            return visitor.Types;
         }
 
         public static bool IsAccessibleOutsideOfAssembly(this ISymbol symbol)
@@ -36,7 +36,7 @@ namespace SemVer.NuGet.Extensions
             }
         }
 
-        public static TypeCategory GetCategory(this INamedTypeSymbol symbol)
+        public static TypeDeclarationKind GetTypeDeclarationKind(this INamedTypeSymbol symbol)
         {
             if (symbol is null)
                 throw new ArgumentNullException(nameof(symbol));
@@ -44,12 +44,29 @@ namespace SemVer.NuGet.Extensions
             if (!symbol.IsType)
                 throw new ArgumentException(SR.Format(Exceptions.InvalidTypeSymbolFormat, symbol.Name), nameof(symbol));
 
-            if (symbol.IsValueType)
-                return TypeCategory.Struct;
-            else if (symbol.IsReferenceType)
-                return TypeCategory.Class;
-            else
-                throw new ArgumentOutOfRangeException(nameof(symbol));
+            return symbol.TypeKind switch
+            {
+                TypeKind.Enum => TypeDeclarationKind.Enum,
+                TypeKind.Struct => TypeDeclarationKind.Struct,
+                TypeKind.Class => TypeDeclarationKind.Class,
+                TypeKind.Interface => TypeDeclarationKind.Interface,
+                TypeKind.Delegate => TypeDeclarationKind.Delegate,
+                _ => throw new ArgumentOutOfRangeException(nameof(symbol))
+            };
+        }
+
+        public static ExportedMemberSymbolInfo GetExportedMembers(this INamedTypeSymbol symbol, CancellationToken cancellationToken = default)
+        {
+            if (symbol is null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            if (!symbol.IsType)
+                throw new ArgumentException(SR.Format(Exceptions.InvalidTypeSymbolFormat, symbol.Name), nameof(symbol));
+
+            ExportedMemberVisitor visitor = new ExportedMemberVisitor(cancellationToken);
+            visitor.Visit(symbol);
+
+            return new ExportedMemberSymbolInfo(visitor.Events, visitor.Fields, visitor.Methods, visitor.Properties);
         }
     }
 }

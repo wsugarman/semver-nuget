@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using NuGet.Frameworks;
+using NuGet.Versioning;
 
 namespace SemVer.NuGet
 {
@@ -19,12 +20,15 @@ namespace SemVer.NuGet
 
         public string ProjectPath { get; }
 
+        public NuGetVersion DefaultVersion { get; }
+
         public NuGetPackageSpecification(
             string packageId,
             string projectPath,
             IReadOnlyCollection<NuGetFramework> targetFrameworks,
-            bool includePrerelease = false)
-            : this(packageId, projectPath, packageId + ".dll", targetFrameworks, includePrerelease)
+            bool includePrerelease = false,
+            NuGetVersion? defaultVersion = null)
+            : this(packageId, projectPath, packageId + ".dll", targetFrameworks, includePrerelease, defaultVersion)
         { }
 
         public NuGetPackageSpecification(
@@ -32,7 +36,8 @@ namespace SemVer.NuGet
             string assemblyFile,
             string projectPath,
             IReadOnlyCollection<NuGetFramework> targetFrameworks,
-            bool includePrerelease = false)
+            bool includePrerelease = false,
+            NuGetVersion? defaultVersion = null)
         {
             if (string.IsNullOrWhiteSpace(packageId))
                 throw new ArgumentNullException(nameof(packageId));
@@ -49,11 +54,18 @@ namespace SemVer.NuGet
             if (targetFrameworks.Count == 0)
                 throw new ArgumentOutOfRangeException(nameof(targetFrameworks));
 
+            defaultVersion ??= new NuGetVersion(1, 0, 0);
+            if (defaultVersion.IsLegacyVersion || !defaultVersion.IsSemVer2)
+                throw new ArgumentException(
+                    SR.Format(Exceptions.InvalidDefaultVersionFormat, defaultVersion.ToNormalizedString()),
+                    nameof(defaultVersion));
+
             PackageId = packageId;
             AssemblyName = assemblyFile;
             ProjectPath = projectPath;
             TargetFrameworks = targetFrameworks;
             IncludePrerelease = includePrerelease;
+            DefaultVersion = defaultVersion;
         }
     }
 }

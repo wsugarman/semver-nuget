@@ -4,10 +4,11 @@
 using System;
 using System.Collections.Generic;
 using NuGet.Frameworks;
+using NuGet.Versioning;
 
 namespace SemVer.NuGet.Api
 {
-    internal class ChangeSummaryBuilder
+    internal class ChangeLogger
     {
         private readonly Dictionary<string, List<NuGetFramework>> _majorChanges = new Dictionary<string, List<NuGetFramework>>();
         private readonly Dictionary<string, List<NuGetFramework>> _minorChanges = new Dictionary<string, List<NuGetFramework>>();
@@ -33,7 +34,7 @@ namespace SemVer.NuGet.Api
             frameworks.Add(nugetFramework);
         }
 
-        public ChangeSummary Finalize()
-            => new ChangeSummary(_majorChanges, _minorChanges);
+        public ChangeSummary Summarize(NuGetVersion currentVersion)
+            => new ChangeSummary(currentVersion, _majorChanges, _minorChanges);
     }
 }

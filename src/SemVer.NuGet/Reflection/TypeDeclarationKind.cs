@@ -3,9 +3,12 @@
 
 namespace SemVer.NuGet.Reflection
 {
-    internal enum TypeCategory
+    internal enum TypeDeclarationKind
     {
         Class,
         Struct,
+        Enum,
+        Interface,
+        Delegate,
     }
 }

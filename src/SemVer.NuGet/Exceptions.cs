@@ -12,13 +12,15 @@ namespace SemVer.NuGet
 
         public static string CompilationFailedFormat => ExceptionResourceManager.GetString(nameof(CompilationFailedFormat), CultureInfo.CurrentUICulture)!;
 
+        public static string InvalidDefaultVersionFormat => ExceptionResourceManager.GetString(nameof(InvalidDefaultVersionFormat), CultureInfo.CurrentUICulture)!;
+
+        public static string InvalidLatestVersionFormat => ExceptionResourceManager.GetString(nameof(InvalidLatestVersionFormat), CultureInfo.CurrentUICulture)!;
+
         public static string InvalidOutputTypeFormat => ExceptionResourceManager.GetString(nameof(InvalidOutputTypeFormat), CultureInfo.CurrentUICulture)!;
 
         public static string InvalidTargetFrameworkFormat => ExceptionResourceManager.GetString(nameof(InvalidTargetFrameworkFormat), CultureInfo.CurrentUICulture)!;
 
         public static string InvalidTypeSymbolFormat => ExceptionResourceManager.GetString(nameof(InvalidTypeSymbolFormat), CultureInfo.CurrentUICulture)!;
-
-        public static string InvalidVersionFormat => ExceptionResourceManager.GetString(nameof(InvalidVersionFormat), CultureInfo.CurrentUICulture)!;
 
         public static string MissingLibFolderMessage => ExceptionResourceManager.GetString(nameof(MissingLibFolderMessage), CultureInfo.CurrentUICulture)!;
 

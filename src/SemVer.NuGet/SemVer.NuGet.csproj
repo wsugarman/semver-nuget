@@ -43,7 +43,11 @@
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
   </ItemGroup>
 
+  <!-- File Groups -->
   <ItemGroup>
+    <None Include="Extensions\ChangeLogger.*.Extensions.cs">
+      <DependentUpon>ChangeLogger.Extensions.cs</DependentUpon>
+    </None>
     <None Include="MSBuild\VersionDetectionTask.*.cs">
       <DependentUpon>VersionDetectionTask.cs</DependentUpon>
     </None>

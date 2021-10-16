@@ -13,15 +13,15 @@ namespace SemVer.NuGet.Roslyn
 
     internal class ExportedTypeVisitor : SymbolVisitor
     {
-        public IReadOnlyCollection<INamedTypeSymbol> FoundTypes => _exportedTypes;
+        public IReadOnlyCollection<INamedTypeSymbol> Types => _types;
 
-        private readonly HashSet<INamedTypeSymbol> _exportedTypes;
+        private readonly HashSet<INamedTypeSymbol> _types;
         private readonly CancellationToken _cancellationToken;
 
         public ExportedTypeVisitor(CancellationToken cancellation = default)
         {
 #pragma warning disable RS1024 // This is a bug with the analyzer: https://github.com/dotnet/roslyn-analyzers/issues/3427
-            _exportedTypes = new HashSet<INamedTypeSymbol>(SymbolEqualityComparer.Default);
+            _types = new HashSet<INamedTypeSymbol>(SymbolEqualityComparer.Default);
 #pragma warning restore RS1024 // Compare symbols correctly
             _cancellationToken = cancellation;
         }
@@ -45,7 +45,7 @@ namespace SemVer.NuGet.Roslyn
         {
             _cancellationToken.ThrowIfCancellationRequested();
 
-            if (!symbol.IsAccessibleOutsideOfAssembly() || !_exportedTypes.Add(symbol))
+            if (!symbol.IsAccessibleOutsideOfAssembly() || !_types.Add(symbol))
                 return;
 
             ImmutableArray<INamedTypeSymbol> nestedTypes = symbol.GetTypeMembers();

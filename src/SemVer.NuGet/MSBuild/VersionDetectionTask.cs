@@ -2,13 +2,16 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework;
 using NuGet.Configuration;
 using NuGet.Protocol.Core.Types;
+using SemVer.NuGet.Api;
 using SemVer.NuGet.Logging;
 
 namespace SemVer.NuGet.MSBuild
@@ -57,9 +60,31 @@ namespace SemVer.NuGet.MSBuild
             NuGetClient client = new NuGetClient(settings, sourceCacheContext, new MSBuildLogger(Log));
 
             // Create the diff
-            NuGetPackageDiff diff = new NuGetPackageDiff(client, GetSpecification());
-            await diff.GetChangesAsync(_tokenSource.Token).ConfigureAwait(false);
+            NuGetPackageSpecification spec = GetSpecification();
+            NuGetPackageDiff differ = new NuGetPackageDiff(client, spec);
+            ChangeSummary changes = await differ.GetChangesAsync(_tokenSource.Token).ConfigureAwait(false);
+
+            // Output changes
+            OutputChangeList(changes);
+            SetOutputProperties(changes, spec.DefaultVersion);
             return true;
+        }
+
+        private void OutputChangeList(ChangeSummary summary)
+        {
+            foreach ((ChangeKind kind, IReadOnlyList<CodeChange> changes) in summary.Changes)
+            {
+                Log.LogMessage(MessageImportance.Normal, SR.Format(Messages.ChangeHeaderFormat, kind));
+                foreach (CodeChange change in changes)
+                {
+                    Log.LogMessage(
+                        MessageImportance.Normal,
+                        SR.Format(
+                            Messages.ChangeFormat,
+                            string.Join('/', change.TargetFrameworks.Select(x => x.GetShortFolderName())),
+                            change.Description));
+                }
+            }
         }
     }
 }

@@ -117,55 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AssemblyRenameFormat" xml:space="preserve">
-    <value>Assembly has been renamed from '{0}' to '{1}' for framework '{2}'.</value>
+  <data name="ChangeFormat" xml:space="preserve">
+    <value>    - [{0}] {1}</value>
   </data>
-  <data name="ClassAbstractAddedFormat" xml:space="preserve">
-    <value>Class '{0} is now abstract.</value>
+  <data name="ChangeHeaderFormat" xml:space="preserve">
+    <value>{0} Changes</value>
   </data>
-  <data name="ClassAbstractRemovedFormat" xml:space="preserve">
-    <value>Class '{0}' is no longer abstract.</value>
+  <data name="MajorChangeMessage" xml:space="preserve">
+    <value>Major changes have been made to the public API surface.</value>
   </data>
-  <data name="ClassSealedAddedFormat" xml:space="preserve">
-    <value>Class '{0}' is now sealed.</value>
+  <data name="MinorChangeMessage" xml:space="preserve">
+    <value>Minor changes have been made to the public API surface.</value>
   </data>
-  <data name="ClassSealedRemovedFormat" xml:space="preserve">
-    <value>Class '{0} is no longer sealed.</value>
+  <data name="NewPackageFormat" xml:space="preserve">
+    <value>Package '{0}' has not been published before. Using default version '{1}'.</value>
   </data>
-  <data name="ClassStaticAddedFormat" xml:space="preserve">
-    <value>Class '{0} is now static.</value>
+  <data name="PatchChangeMessage" xml:space="preserve">
+    <value>No changes have been made to the public API surface.</value>
   </data>
-  <data name="ClassStaticRemovedFormat" xml:space="preserve">
-    <value>Class '{0}' is no longer static.</value>
-  </data>
-  <data name="EnumUnderlyingTypeChangedFormat" xml:space="preserve">
-    <value>Underlying type for enum '{0}' has changed from '{0}' to '{1}'.</value>
-  </data>
-  <data name="StructReadOnlyAddedFormat" xml:space="preserve">
-    <value>Struct '{0}' is now readonly.</value>
-  </data>
-  <data name="StructReadOnlyRemovedFormat" xml:space="preserve">
-    <value>Struct '{0}' is no longer readonly.</value>
-  </data>
-  <data name="StructRefAddedFormat" xml:space="preserve">
-    <value>'{0}' is now a ref struct.</value>
-  </data>
-  <data name="StructRefRemovedFormat" xml:space="preserve">
-    <value>'{0}' is no longer a ref struct.</value>
-  </data>
-  <data name="TargetFrameworkAddedFormat" xml:space="preserve">
-    <value>New target framework '{0}' has been added.</value>
-  </data>
-  <data name="TargetFrameworkRemovedFormat" xml:space="preserve">
-    <value>Existing target framework '{0}' has been removed.</value>
-  </data>
-  <data name="TypeAddedFormat" xml:space="preserve">
-    <value>New type '{0}' has been added.</value>
-  </data>
-  <data name="TypeCategoryChangeFormat" xml:space="preserve">
-    <value>Type '{0}' was changed from a '{1}' to '{2}'.</value>
-  </data>
-  <data name="TypeRemovedFormat" xml:space="preserve">
-    <value>Existing type '{0}' has been removed.</value>
+  <data name="VersionDetectedFormat" xml:space="preserve">
+    <value>The next release should use the version '{0}'.</value>
   </data>
 </root>

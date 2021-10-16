@@ -49,23 +49,31 @@ namespace SemVer.NuGet.MSBuild
         public string ProjectPath { get; set; } = "";
 
         /// <summary>
-        /// Gets or sets a flag indicating whether pre-release versions should be considered.
+        /// Gets or sets an optional flag indicating whether pre-release versions should be considered.
         /// </summary>
         /// <value>
         /// <see langword="true"/> if pre-release versions taken into consideration; otherwise, <see langword="false"/>
         /// </value>
-        [Required]
         public bool IncludePrerelease { get; set; }
+
+        /// <summary>
+        /// Gets or sets the optional default package version if the package has not yet been published.
+        /// </summary>
+        /// <remarks>
+        /// If left unspecified, the value default version will be <c>1.0.0</c>.
+        /// </remarks>
+        /// <value>The default semantic version.</value>
+        public string? DefaultVersion { get; set; }
 
         internal string AssemblyExtension
         {
             get
             {
                 if (string.Equals(OutputType, "Library", StringComparison.OrdinalIgnoreCase))
-                    return "dll";
+                    return ".dll";
                 else if (string.Equals(OutputType, "Exe", StringComparison.OrdinalIgnoreCase)
                     || string.Equals(OutputType, "Winexe", StringComparison.OrdinalIgnoreCase))
-                    return "exe";
+                    return ".exe";
                 else
                     throw new ArgumentException(SR.Format(Exceptions.InvalidOutputTypeFormat, OutputType));
             }
@@ -85,7 +93,7 @@ namespace SemVer.NuGet.MSBuild
 
             return new NuGetPackageSpecification(
                 PackageId,
-                AssemblyName + "." + AssemblyExtension,
+                AssemblyName + AssemblyExtension,
                 ProjectPath,
                 nugetFrameworks,
                 IncludePrerelease);

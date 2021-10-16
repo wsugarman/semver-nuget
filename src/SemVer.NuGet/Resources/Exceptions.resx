@@ -123,6 +123,12 @@
   <data name="CompilationFailedFormat" xml:space="preserve">
     <value>Compilation failed for target framework '{0}'.</value>
   </data>
+  <data name="InvalidDefaultVersionFormat" xml:space="preserve">
+    <value>Default NuGet version '{0}' is legacy or not compliant with SemVer 2.0.</value>
+  </data>
+  <data name="InvalidLatestVersionFormat" xml:space="preserve">
+    <value>Latest NuGet version '{0}' for package ID '{1}' is legacy or not compliant with SemVer 2.0.</value>
+  </data>
   <data name="InvalidOutputTypeFormat" xml:space="preserve">
     <value>Invalid value OutputType property '{0}'.</value>
   </data>
@@ -131,9 +137,6 @@
   </data>
   <data name="InvalidTypeSymbolFormat" xml:space="preserve">
     <value>Symbol '{0}' is not a type.</value>
-  </data>
-  <data name="InvalidVersionFormat" xml:space="preserve">
-    <value>Latest NuGet version '{0}' for package ID '{1}' is not compliant with SemVer 2.0.</value>
   </data>
   <data name="MissingLibFolderMessage" xml:space="preserve">
     <value>Package must specify a /lib folder.</value>
